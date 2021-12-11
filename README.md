@@ -6,7 +6,7 @@ This repo provides a bash library called `wordsplit.bash` which splits a string 
 >
 > -- <cite>[superuser](https://superuser.com/a/1529316/303009)</cite>
 
-Wordsplit defines a single function called `wordsplit` which takes a string argument and splits it into the `WORDS` array. It uses the same rules as Bash does to splits args, except that it does not recognize ANSI-C escape sequences (`$'STRING'`).
+Wordsplit defines a single function called `wordsplit` which takes a string argument and splits it into the `WORDS` array. It uses the same rules as Bash does to splits args, except that it does not recognize ANSI-C [escape sequences](https://www.gnu.org/software/bash/manual/html_node/ANSI_002dC-Quoting.html) (`$'STRING'`).
 
 Here's `example/parse-stdin.bash`:
 
