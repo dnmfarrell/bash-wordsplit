@@ -2,6 +2,7 @@
 wordsplit () {
   WORDS=()
   WORDC=0
+  WORDERR=
   local idx=0 quo= word= c= esc=
   while :;do
     c="${1:$idx:1}"
@@ -27,8 +28,8 @@ wordsplit () {
         continue
       fi
     elif [ -z "$c" ];then
-      echo "found unterminated string at col $idx: '$1'"
-      exit 1
+      WORDERR="found unterminated string at col $idx: '$1'"
+      return 1
     elif [ "$c" = '\' ]&&[ "$quo" = '"' ];then
       if [[ "${1:$idx:1}" == [$\\\`\"] ]];then # 4 escapable chars
         c="${1:$idx:1}"
@@ -41,4 +42,5 @@ wordsplit () {
     esc=
     word+="$c"
   done
+  return 0
 }

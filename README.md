@@ -8,6 +8,8 @@ This repo provides a bash library called `wordsplit.bash` which splits a string 
 
 Wordsplit defines a single function called `wordsplit` which takes a string argument and splits it into the `WORDS` array. It uses the same rules as Bash does to splits args, except that it does not recognize ANSI-C [escape sequences](https://www.gnu.org/software/bash/manual/html_node/ANSI_002dC-Quoting.html) (`$'STRING'`).
 
+If wordsplit detects an unterminated quote, it will return 1 and save the error message to `WORDERR`. Otherwise it returns 0.
+
 Here's `example/parse-stdin.bash`:
 
     #!/bin/bash
