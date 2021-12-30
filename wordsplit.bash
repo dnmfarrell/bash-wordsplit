@@ -7,11 +7,9 @@ wordsplit () {
   local quo= word= esc=
   while getopts ":" opt "-$1";do
     if [ -z $quo ];then
-      if [ "$OPTARG" = '\' ];then
-        if [ -z "$esc" ];then
-          esc=1
-          continue
-        fi
+      if [ "$OPTARG" = '\' ]&&[ -z "$esc" ];then
+        esc=1
+        continue
       elif ([[ "$OPTARG" == [$' \t\n'] ]]&&[ -z "$esc" ]);then
         if [ -n "$word" ];then
           WORDS+=("$word")
