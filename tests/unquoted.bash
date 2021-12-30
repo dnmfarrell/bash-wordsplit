@@ -4,6 +4,11 @@ test_name="unquoted"
 args=$'foo bar\	baz	abc\\\'\
 def'
 wordsplit "$args"
+if [ -z "$WORDERR" ];then
+  pass "no parse error"
+else
+  fail "parse error: $WORDERR"
+fi
 if [ $WORDC -eq 3 ];then
  pass "$test_name count"
 else

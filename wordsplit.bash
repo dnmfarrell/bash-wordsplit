@@ -3,44 +3,49 @@ wordsplit () {
   WORDS=()
   WORDC=0
   WORDERR=
-  local idx=0 quo= word= c= esc=
-  while :;do
-    c="${1:$idx:1}"
-    (( idx++ ))
+  OPTIND=1
+  local quo= word= esc=
+  while getopts ":" opt "-$1";do
     if [ -z $quo ];then
-      if [ "$c" = '\' ];then
+      if [ "$OPTARG" = '\' ];then
         if [ -z "$esc" ];then
           esc=1
           continue
-        else
-          esc=
         fi
-      elif ([[ "$c" == [$' \t\n'] ]]&&[ -z "$esc" ])||[ -z "$c" ];then
+      elif ([[ "$OPTARG" == [$' \t\n'] ]]&&[ -z "$esc" ]);then
         if [ -n "$word" ];then
           WORDS+=("$word")
           word=
           (( WORDC++ ))
         fi
-        [ -z "$c" ] && break
         continue
-      elif ([ "$c" = "'" ]||[ "$c" = '"' ])&&[ -z "$esc" ];then
-        quo="$c"
+      elif ([ "$OPTARG" = "'" ]||[ "$OPTARG" = '"' ])&&[ -z "$esc" ];then
+        quo="$OPTARG"
         continue
       fi
-    elif [ -z "$c" ];then
-      WORDERR="found unterminated string at col $idx: '$1'"
-      return 1
-    elif [ "$c" = '\' ]&&[ "$quo" = '"' ];then
-      if [[ "${1:$idx:1}" == [$\\\`\"] ]] || [ "${1:$idx:1}" = $'\n' ];then
-        c="${1:$idx:1}"
-        (( idx++ ))
+    elif [ "$quo" = '"' ];then
+      if [ -n "$esc" ];then
+        ! [[ "$OPTARG" == [$'$\\`"\n'] ]] && word+='\'
+      elif [ "$OPTARG" = '\' ];then
+        esc=1
+        continue
+      elif [ "$OPTARG" = '"' ];then
+        quo=
+        continue
       fi
-    elif [ "$c" = "$quo" ];then
+    elif [ "$OPTARG" = "$quo" ];then # single quote term
       quo=
       continue
     fi
+    word+="$OPTARG"
     esc=
-    word+="$c"
   done
+  if [ -n "$quo" ];then
+    WORDERR="found unterminated string"
+    return 1
+  elif [ -n "$word" ];then
+    WORDS+=("$word")
+    (( WORDC++ ))
+  fi
   return 0
 }
