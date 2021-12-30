@@ -10,6 +10,8 @@ Wordsplit defines a single function called `wordsplit` which takes a string argu
 
 If wordsplit detects an unterminated quote, it will return 1 and save the error message to `WORDERR`. Otherwise it returns 0.
 
+My [blog post](https://blog.dnmfarrell.com/post/replicating-bash-argument-splitting/) has more detail about Bash's behavior and `wordsplit`.
+
 Here's `example/parse-stdin.bash`:
 
     #!/bin/bash
