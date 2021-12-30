@@ -1,7 +1,8 @@
 #!/bin/bash
 source "bootstrap-tests.bash"
 test_name="unquoted"
-args="foo \bar\	baz	abc\'"
+args=$'foo bar\	baz	abc\\\'\
+def'
 wordsplit "$args"
 if [ $WORDC -eq 3 ];then
  pass "$test_name count"
@@ -21,7 +22,7 @@ else
   fail "$test_name col $col got '${WORDS[$col]}'"
 fi
 col=2
-if [ "${WORDS[$col]}" = "abc'" ];then
+if [ "${WORDS[$col]}" = $'abc\'\ndef' ];then
   pass "$test_name col $col"
 else
   fail "$test_name col $col got '${WORDS[$col]}'"

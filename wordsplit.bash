@@ -15,7 +15,7 @@ wordsplit () {
         else
           esc=
         fi
-      elif ([ "$c" = " " ]||[ "$c" = "	" ]&&[ -z "$esc" ])||[ -z "$c" ];then
+      elif ([[ "$c" == [$' \t\n'] ]]&&[ -z "$esc" ])||[ -z "$c" ];then
         if [ -n "$word" ];then
           WORDS+=("$word")
           word=
