@@ -1,7 +1,8 @@
 #!/bin/bash
 source "bootstrap-tests.bash"
 test_name="common cases"
-args='"foo" "bar baz"	"\\a\`b\"c\$"'
+args='"foo" "bar \
+baz"	"\\a\`b\"c\$"'
 wordsplit "$args"
 if [ $WORDC -eq 3 ];then
  pass "$test_name count"
@@ -15,7 +16,7 @@ else
   fail "$test_name col $col got '${WORDS[$col]}'"
 fi
 col=1
-if [ "${WORDS[$col]}" = 'bar baz' ];then
+if [ "${WORDS[$col]}" = $'bar \nbaz' ];then
   pass "$test_name col $col"
 else
   fail "$test_name col $col got '${WORDS[$col]}'"

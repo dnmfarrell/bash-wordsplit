@@ -31,7 +31,7 @@ wordsplit () {
       WORDERR="found unterminated string at col $idx: '$1'"
       return 1
     elif [ "$c" = '\' ]&&[ "$quo" = '"' ];then
-      if [[ "${1:$idx:1}" == [$\\\`\"] ]];then # 4 escapable chars
+      if [[ "${1:$idx:1}" == [$\\\`\"] ]] || [ "${1:$idx:1}" = $'\n' ];then
         c="${1:$idx:1}"
         (( idx++ ))
       fi
